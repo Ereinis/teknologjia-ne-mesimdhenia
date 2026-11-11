@@ -1,0 +1,154 @@
+<!DOCTYPE html><html lang="sq" class="no-js"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>E shkuara dhe e ardhmja e mësimdhënies me teknologjinë</title>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap">
+	<style>
+		:root{--paper:#ECE4D0;--ink:#111815;--board:#1E3A2D;--red:#C23B22;--mute:#6E6A58;--serif:'Instrument Serif',Georgia,serif;--body:'Newsreader',Georgia,serif;--mono:'JetBrains Mono',ui-monospace,monospace}
+		@media(prefers-color-scheme:dark){:root{--paper:#ECE4D0;--ink:#111815}}
+		*{box-sizing:border-box;margin:0}html{scroll-behavior:smooth}
+		body{background:var(--paper);color:var(--ink);font:20px/1.55 var(--body)}
+		.mono{font:700 12px var(--mono);letter-spacing:.12em;text-transform:uppercase}
+		section{padding:12vh 6vw}
+		.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:24px}
+		/* hero */
+		.hero{min-height:100vh;display:grid;grid-template-rows:auto 1fr auto;padding:5vh 6vw;border-bottom:3px solid var(--ink)}
+		.hero h1{font:400 clamp(64px,15vw,230px)/.82 var(--serif);letter-spacing:-.03em;align-self:center}
+		.hero h1 em{color:var(--red);display:block;padding-left:12vw}
+		.hero .top,.hero .bot{display:flex;justify-content:space-between;gap:20px;align-items:end}
+		.scroll{display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--ink);text-decoration:none}
+		.scroll i{width:2px;height:54px;background:var(--ink);position:relative;overflow:hidden}
+		.scroll i:after{content:"";position:absolute;left:0;top:-20px;width:2px;height:20px;background:var(--red);animation:d 1.6s infinite}
+		@keyframes d{to{top:54px}}
+		/* intro */
+		.intro h2{grid-column:1/6;font:400 clamp(40px,5vw,72px)/1 var(--serif)}
+		.intro .cols{grid-column:6/13;columns:2;column-gap:32px}
+		.intro p{margin-bottom:1em}.intro .cols p:first-child:first-letter{font:400 4.2em/.8 var(--serif);float:left;padding:6px 8px 0 0;color:var(--red)}
+		.map{grid-column:1/13;display:grid;grid-template-columns:repeat(4,auto);border-top:1px solid var(--ink);margin-top:40px}
+		.map a{color:inherit;text-decoration:none;padding:14px 0;border-bottom:1px solid var(--ink)}.map a:hover{color:var(--red)}
+		/* past */
+		.past{background:repeating-linear-gradient(var(--paper) 0 35px,#d6cdb4 35px 36px);border-top:3px solid var(--ink)}
+		.sh{display:flex;gap:24px;align-items:baseline;margin-bottom:6vh}.sh b{font:400 clamp(90px,14vw,200px)/.8 var(--serif);color:var(--red)}
+		.sh h2{font:400 clamp(38px,6vw,90px)/.95 var(--serif)}
+		figure{position:relative}figure img{width:100%;display:block;border:1px solid var(--ink)}
+		figcaption{font:12px var(--mono);margin-top:8px;color:var(--mute)}
+		.past .a{grid-column:1/8}.past .b{grid-column:9/13;margin-top:18vh}.past .t{grid-column:2/8;margin-top:4vh}.past .t2{grid-column:8/13;margin-top:4vh}
+		.past img{filter:sepia(.5) contrast(1.05)}
+		/* future */
+		.future{background:var(--board);color:var(--paper)}
+		.future .sh b{color:var(--paper);opacity:.35}.future .sh h2{color:var(--paper)}
+		.future .a{grid-column:6/13}.future .b{grid-column:1/6;margin-top:14vh}.future .t{grid-column:1/7;margin-top:5vh}.future .t2{grid-column:8/13;margin-top:5vh}
+		.future img{border-color:var(--paper)}.future figcaption{color:#a9b8ad}
+		/* data */
+		.data{border-top:3px solid var(--ink)}
+		.stats{display:grid;grid-template-columns:2fr 1fr 1fr;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);margin:5vh 0}
+		.stats div{padding:24px 24px 24px 0;border-right:1px solid var(--ink)}.stats div+div{padding-left:24px}.stats div:last-child{border:0}
+		.stats big{display:block;font:400 clamp(56px,9vw,140px)/.9 var(--serif)}.stats div:first-child big{color:var(--red)}
+		.ctl{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+		.ctl button{font:700 12px var(--mono);text-transform:uppercase;letter-spacing:.08em;padding:10px 14px;background:transparent;border:1.5px solid var(--ink);color:var(--ink);cursor:pointer}
+		.ctl button[aria-pressed=true]{background:var(--ink);color:var(--paper)}
+		#chart{width:100%;height:auto;display:block;background:var(--paper);border:1px solid var(--ink)}
+		#tip{font:700 14px var(--mono);min-height:24px;margin-top:10px}
+		.note{font:12px/1.5 var(--mono);color:var(--mute);margin-top:18px;max-width:80ch}
+		.bars{margin-top:8vh}.bars h3{font:400 40px var(--serif);margin-bottom:12px}
+		.row{display:grid;grid-template-columns:150px 1fr 70px;gap:14px;align-items:center;font:13px var(--mono);padding:8px 0;border-bottom:1px solid #c9bfa4}
+		.row span.f{display:block;height:18px;background:var(--board);width:0;transition:width 1.2s cubic-bezier(.2,.7,.2,1)}.row:nth-child(2) .f{background:var(--red)}
+		/* thanks */
+		.thanks{background:var(--red);color:var(--paper);text-align:left}
+		.thanks h2{font:400 clamp(60px,12vw,190px)/.85 var(--serif)}.thanks p{max-width:46ch;margin-top:3vh;font-size:22px}
+		footer{background:var(--ink);color:var(--paper);padding:6vh 6vw;display:grid;gap:10px;font:13px/1.6 var(--mono)}
+		footer strong{font:400 28px var(--serif)}
+		@media(max-width:800px){.grid>*{grid-column:1/-1!important;margin-top:20px!important}.intro .cols{columns:1}.map{grid-template-columns:1fr 1fr}.stats{grid-template-columns:1fr}.stats div{border:0;border-bottom:1px solid var(--ink);padding-left:0!important}.row{grid-template-columns:100px 1fr 56px}}
+
+		/* animacione */
+		#bar{position:fixed;top:0;left:0;height:4px;width:100%;background:var(--red);transform:scaleX(0);transform-origin:0 50%;z-index:9}
+		.js .rv{opacity:0;transform:translateY(48px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
+		.js .rv.l{transform:translateX(-60px)}.js .rv.r{transform:translateX(60px)}
+		.js .rv.in{opacity:1;transform:none}
+		.js .past figure.rv img,.js .future figure.rv img{clip-path:inset(0 100% 0 0);transition:clip-path 1.2s cubic-bezier(.2,.7,.2,1) .15s}
+		.js .rv.in img{clip-path:inset(0 0 0 0)!important}
+		.hero h1{animation:up 1.1s cubic-bezier(.2,.7,.2,1) both}.hero h1 em{animation:up 1.1s .35s cubic-bezier(.2,.7,.2,1) both}
+		@keyframes up{from{opacity:0;transform:translateY(60px)}}
+		#tw{max-width:34ch;font-style:italic;min-height:3.4em}
+		#tw:after{content:"";display:inline-block;width:2px;height:1em;background:var(--red);margin-left:3px;vertical-align:-.15em;animation:bl .8s steps(1) infinite}
+		@keyframes bl{50%{opacity:0}}
+		.sh b{will-change:transform}
+		@media(prefers-reduced-motion:reduce){.js .rv{opacity:1;transform:none;transition:none}.js .rv img{clip-path:none!important}.hero h1,.hero h1 em,.scroll i:after,#tw:after{animation:none}}
+	</style></head><body><div id="bar"></div><script>document.documentElement.className="js"</script>
+
+		<header class="hero">
+			<div class="top mono"><span>Projekt shkollor · Viti 2026–2027</span><span>Lezhë, Shqipëri</span></div>
+			<h1>E shkuara<br>dhe e ardhmja <em>e arsimit.</em></h1>
+			<div class="bot"><p id="tw" aria-label="Nga dërrasa e zezë te ekrani: si e ka ndryshuar teknologjia mënyrën se si mësojmë."></p>
+			<a class="scroll mono" href="#hyrje"><span>Zbrit poshtë për më shumë informacion</span><i></i></a></div>
+		</header>
+
+		<section class="intro" id="hyrje"><div class="grid">
+				<h2>Nga shkumësi te algoritmi.</h2>
+				<div class="cols">
+					<p>Për shekuj me radhë, mësimi varej nga fjala e mësuesit, nga libri dhe nga dërrasa e zezë. Nxënësit shkruanin me bojë e penë, kujtonin përmendësh dhe llogarisnin me abak ose me llogaritës të thjeshtë. Njohuria rrinte në pak libra dhe në shumë përsëritje.</p>
+					<p>Sot klasa ka dalë përtej katër mureve. Nxënësit hyjnë në platforma mësimore, ndjekin mësime në video, kryejnë detyra në internet dhe përdorin pajisje që në vitet '90 dukeshin fantazi. Pandemia e vitit 2020 e shpejtoi këtë ndryshim në mënyrë të pazakontë.</p>
+					<p>Kjo faqe ndahet në katër pjesë: <b>e shkuara</b> me metodat pa teknologji, <b>e ardhmja</b> me mësimin me teknologji, <b>statistika</b> të ndërveprueshme dhe një falënderim në fund.</p>
+				</div>
+				<nav class="map mono"><a href="#e-shkuara">01 · E shkuara</a><a href="#e-ardhmja">02 · E ardhmja</a><a href="#statistika">03 · Statistika</a><a href="#faleminderit">04 · Faleminderit</a></nav>
+		</div></section>
+
+		<section class="past" id="e-shkuara"><div class="sh"><b>01</b><h2>E shkuara e teknologjisë në mësimdhënie</h2></div><div class="grid">
+				<figure class="a"><img src="assets/e-shkuara-1.svg" alt="Dërrasa e zezë me shkumës në klasë"><figcaption>FIG. 1 — Dërrasa e zezë: mjeti kryesor i mësuesit për më shumë se një shekull.</figcaption></figure>
+				<figure class="b"><img src="assets/e-shkuara-2.svg" alt="Bankë shkolle me pllakë dhe bojë"><figcaption>FIG. 2 — Banka prej druri, pllaka dhe bojë.</figcaption></figure>
+				<p class="t">Mësuesi ishte burimi kryesor i dijes. Nxënësit kopjonin nga dërrasa në fletore, shkruanin me penë e bojë dhe merrnin vlerësim vetëm në shkollë.</p>
+				<p class="t2">Libri i shtypur ishte i rrallë dhe shpesh përbashkët. Detyrat bëheshin me dorë, dhe mësimi ishte i njëjtë për të gjithë, pa dallim ritmi.</p>
+		</div></section>
+
+		<section class="future" id="e-ardhmja"><div class="sh"><b>02</b><h2>E ardhmja e teknologjisë në mësimdhënie</h2></div><div class="grid">
+				<figure class="a"><img src="assets/e-sotme-1.svg" alt="Tablet me grafikë mësimorë"><figcaption>FIG. 3 — Tableti: libra, grafikë dhe shënime në një pajisje.</figcaption></figure>
+				<figure class="b"><img src="assets/e-sotme-2.svg" alt="Mësim në distancë me video"><figcaption>FIG. 4 — Mësimi në distancë përmes videopërbashkimit.</figcaption></figure>
+				<p class="t">Sot nxënësi mëson me platforma të personalizuara, me burime të hapura dhe me detyra që vlerësohen menjëherë. Mësuesi bëhet më shumë udhëzues sesa burim i vetëm.</p>
+				<p class="t2">Inteligjenca artificiale, realiteti i shtuar dhe mësimi hibrid po e bëjnë klasën më të përfshirë, por kërkojnë edhe kujdes për shëndetin, vëmendjen dhe barazinë e qasjes.</p>
+		</div></section>
+
+		<section class="data" id="statistika"><div class="sh"><b>03</b><h2>Statistika dhe grafikë</h2></div>
+			<div class="stats"><div><span class="mono">Përdorues të internetit në botë, 2024</span><big>~68%</big></div><div><span class="mono">Nxënës të prekur nga mbyllja e shkollave, prill 2020</span><big>1.6 mld</big></div><div><span class="mono">Rritja e internetit 2005–2024</span><big>×4</big></div></div>
+			<div class="ctl" role="group" aria-label="Zgjidh serinë"><button data-s="0" aria-pressed="true">Përdorues interneti (%)</button><button data-s="1" aria-pressed="true">Abonime celulare / 100 banorë</button></div>
+			<svg id="chart" viewBox="0 0 900 400" role="img" aria-label="Grafik linje i përdorimit të internetit dhe telefonisë celulare 2005–2024"></svg>
+			<div id="tip">Kalo kursorin mbi grafik për të parë vlerat.</div>
+			<div class="bars"><h3>Rritja në 19 vjet (pika përqindjeje)</h3><div id="bars"></div></div>
+			<p class="note">Shifrat janë të rrumbullakosura dhe vijnë nga seritë publike të ITU (Bashkimi Ndërkombëtar i Telekomunikacionit) dhe UNESCO.</p>
+		</section>
+
+		<section class="thanks" id="faleminderit"><h2>Faleminderit.</h2><p>Faleminderit mësuesve tanë, shkollës sonë dhe çdokujt që na dha kohën dhe vëmendjen për të lexuar këtë projekt.</p></section>
+
+		<footer><strong>© 2026 E shkuara dhe e ardhmja e mësimdhënies me teknologjinë.</strong>
+			<span>Të gjitha të drejtat e rezervuara për këtë projekt shkollor.</span>
+			<span>Punuar nga: Ereinis Haxhia (X-D), Viktoria Preçi (X-B)</span>
+			<span>Gjimnazi Jopublik "Rogacionistët" Lezhë, 2026-2027</span></footer>
+
+		<script>
+			const Y=[2005,2010,2015,2020,2024],
+				D=[{n:"Interneti (%)",c:"#C23B22",v:[16,29,41,60,68]},{n:"Celulare/100",c:"#1E3A2D",v:[34,68,99,105,112]}],on=[1,1];
+			const svg=document.getElementById('chart'),W=900,H=400,m={l:56,r:30,t:24,b:44},x=i=>m.l+i*(W-m.l-m.r)/4,y=v=>H-m.b-v*(H-m.t-m.b)/120,tip=document.getElementById('tip');
+			function draw(){let s='';for(let g=0;g<=120;g+=20)s+=`<line x1="${m.l}" x2="${W-m.r}" y1="${y(g)}" y2="${y(g)}" stroke="#c9bfa4"/><text x="${m.l-10}" y="${y(g)+4}" text-anchor="end" font-family="monospace" font-size="12" fill="#6E6A58">${g}</text>`;
+				Y.forEach((t,i)=>s+=`<text x="${x(i)}" y="${H-16}" text-anchor="middle" font-family="monospace" font-size="13" fill="#111815">${t}</text>`);
+				D.forEach((d,k)=>{if(!on[k])return;s+=`<polyline fill="none" stroke="${d.c}" stroke-width="3.5" points="${d.v.map((v,i)=>x(i)+','+y(v)).join(' ')}"/>`+d.v.map((v,i)=>`<rect x="${x(i)-5}" y="${y(v)-5}" width="10" height="10" fill="${d.c}"/>`).join('')});
+				s+=`<line id="cur" y1="${m.t}" y2="${H-m.b}" stroke="#111815" stroke-dasharray="4 4" opacity="0"/>`;svg.innerHTML=s}
+			draw();
+			svg.onmousemove=e=>{const r=svg.getBoundingClientRect(),px=(e.clientX-r.left)*W/r.width;let i=Math.max(0,Math.min(4,Math.round((px-m.l)/((W-m.l-m.r)/4))));const c=svg.querySelector('#cur');c.setAttribute('x1',x(i));c.setAttribute('x2',x(i));c.setAttribute('opacity',1);
+				tip.textContent=Y[i]+' → '+D.map((d,k)=>on[k]?d.n+': '+d.v[i]:'').filter(Boolean).join(' · ')};
+			svg.onmouseleave=()=>{const c=svg.querySelector('#cur');if(c)c.setAttribute('opacity',0)};
+			document.querySelectorAll('.ctl button').forEach(b=>b.onclick=()=>{const k=+b.dataset.s;on[k]=!on[k];b.setAttribute('aria-pressed',!!on[k]);draw()});
+			const B=document.getElementById('bars');D.forEach(d=>{const g=d.v[4]-d.v[0];B.insertAdjacentHTML('beforeend',`<div class="row"><span>${d.n}</span><span class="f" data-w="${g/90*100}"></span><span>+${g}</span></div>`)});
+			new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){B.querySelectorAll('.f').forEach(f=>f.style.width=f.dataset.w+'%');o.disconnect()}})).observe(B);
+
+			/* typewriter */
+			(function(){const el=document.getElementById('tw'),T=["Nga dërrasa e zezë te ekrani: si e ka ndryshuar teknologjia mënyrën se si mësojmë.","Dikur shkumës dhe bojë. Sot tablet dhe internet.","Çfarë do të mësojmë nesër, dhe si?"];
+				if(matchMedia('(prefers-reduced-motion:reduce)').matches){el.textContent=T[0];return}
+				let i=0,j=0,del=false;(function tick(){const t=T[i];el.textContent=t.slice(0,j);let d=del?18:45;
+					if(!del&&j===t.length){del=true;d=i===T.length-1?99999:2200}else if(del&&j===0){del=false;i=(i+1)%T.length;d=400}else j+=del?-1:1;setTimeout(tick,d)})()})();
+			/* scroll reveal + progress + parallax */
+			(function(){const sel='.intro h2,.intro .cols,.map,.sh,.past figure,.future figure,.past p.t,.past p.t2,.future p.t,.future p.t2,.stats div,.ctl,#chart,.bars,.thanks h2,.thanks p';
+				document.querySelectorAll(sel).forEach((e,k)=>{e.classList.add('rv');if(e.matches('.a,.t'))e.classList.add('l');if(e.matches('.b,.t2'))e.classList.add('r');e.style.transitionDelay=(k%3)*90+'ms'});
+				const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15});
+				document.querySelectorAll('.rv').forEach(e=>io.observe(e));
+				const bar=document.getElementById('bar'),nums=document.querySelectorAll('.sh b');let q=false;
+				function f(){q=false;const h=document.documentElement,p=scrollY/(h.scrollHeight-innerHeight);bar.style.transform='scaleX('+p+')';
+					nums.forEach(n=>{const r=n.getBoundingClientRect();n.style.transform='translateY('+((r.top-innerHeight/2)*-.12)+'px)'})}
+				addEventListener('scroll',()=>{if(!q){q=true;requestAnimationFrame(f)}},{passive:true});f()})();
+		</script></body></html>
