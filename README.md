@@ -1,0 +1,1 @@
+# teknologjia-ne-mesimdhenia
